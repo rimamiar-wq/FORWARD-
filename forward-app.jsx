@@ -282,8 +282,8 @@ function NewTask({ onSave, onCancel }) {
 
       <div style={{ marginBottom: 28 }}>
         <label style={{ color: COLORS.muted, fontSize: 12, fontFamily: "'DM Mono', monospace", display: "block", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Stake Amount</label>
-        <div style={{ display: "flex", gap: 10 }}>
-          {[1, 2, 3, 4, 5].map(v => (
+        <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+          {[1, 2, 5, 10].map(v => (
             <button key={v} onClick={() => set("stake", v)} style={{
               flex: 1, padding: "10px 0", borderRadius: 8, border: `1px solid ${form.stake === v ? COLORS.accent : COLORS.border}`,
               background: form.stake === v ? COLORS.accentDim : COLORS.card,
@@ -291,6 +291,22 @@ function NewTask({ onSave, onCancel }) {
               fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "'DM Mono', monospace"
             }}>${v}</button>
           ))}
+        </div>
+        <div style={{ position: "relative" }}>
+          <span style={{
+            position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)",
+            color: COLORS.accent, fontWeight: 700, fontFamily: "'DM Mono', monospace", fontSize: 14
+          }}>$</span>
+          <input
+            type="number" min="1" max="500" placeholder="Custom amount"
+            value={[1, 2, 5, 10].includes(form.stake) ? "" : form.stake}
+            onChange={e => set("stake", Number(e.target.value) || "")}
+            style={{
+              width: "100%", background: COLORS.card, border: `1px solid ${![1,2,5,10].includes(form.stake) && form.stake ? COLORS.accent : COLORS.border}`,
+              borderRadius: 8, padding: "10px 14px 10px 28px", color: COLORS.white,
+              fontFamily: "'DM Mono', monospace", fontSize: 14, boxSizing: "border-box", outline: "none"
+            }}
+          />
         </div>
         <p style={{ color: COLORS.muted2, fontSize: 12, fontFamily: "'DM Sans', sans-serif", marginTop: 8 }}>Returned to you when your work is verified, plus a small bonus.</p>
       </div>
