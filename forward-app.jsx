@@ -96,12 +96,90 @@ function Navbar({ balance, streak, onNav, page }) {
   );
 }
 
-function Landing({ onStart }) {
+function SignUp({ onSignUp, onBack }) {
+  const [mode, setMode] = useState("signup"); // "signup" | "login"
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const valid = mode === "login" ? form.email && form.password : form.name && form.email && form.password;
+
+  const inputStyle = {
+    width: "100%", background: COLORS.card, border: `1px solid ${COLORS.border}`,
+    borderRadius: 8, padding: "11px 14px", color: COLORS.white,
+    fontFamily: "'DM Sans', sans-serif", fontSize: 14, boxSizing: "border-box",
+    outline: "none",
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: COLORS.bg, display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "24px 32px", borderBottom: `1px solid ${COLORS.border}`, display: "flex", alignItems: "center" }}>
+        <button onClick={onBack} style={{ background: "none", border: "none", color: COLORS.muted, cursor: "pointer", fontSize: 13, fontFamily: "'DM Sans', sans-serif", padding: 0, marginRight: 20 }}>← Back</button>
+        <span style={{ color: COLORS.accent, fontWeight: 800, fontSize: 22, fontFamily: "'DM Sans', sans-serif" }}>Forward</span>
+      </div>
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+        <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: "40px 36px", width: "100%", maxWidth: 420 }}>
+          <h2 style={{ color: COLORS.white, fontFamily: "'DM Sans', sans-serif", fontSize: 24, fontWeight: 800, marginBottom: 6 }}>
+            {mode === "signup" ? "Create your account" : "Welcome back"}
+          </h2>
+          <p style={{ color: COLORS.muted, fontFamily: "'DM Sans', sans-serif", fontSize: 14, marginBottom: 28 }}>
+            {mode === "signup" ? "Start holding yourself accountable." : "Sign in to continue your streak."}
+          </p>
+
+          <div style={{ display: "flex", background: COLORS.bg, borderRadius: 8, padding: 4, marginBottom: 28 }}>
+            {["signup", "login"].map(m => (
+              <button key={m} onClick={() => setMode(m)} style={{
+                flex: 1, padding: "8px 0", borderRadius: 6, border: "none",
+                background: mode === m ? COLORS.accent : "transparent",
+                color: mode === m ? COLORS.bg : COLORS.muted,
+                fontWeight: 700, fontSize: 13, cursor: "pointer",
+                fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s"
+              }}>{m === "signup" ? "Sign Up" : "Log In"}</button>
+            ))}
+          </div>
+
+          {mode === "signup" && (
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ color: COLORS.muted, fontSize: 12, fontFamily: "'DM Mono', monospace", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Full Name</label>
+              <input type="text" placeholder="Your name" value={form.name} onChange={e => set("name", e.target.value)} style={inputStyle} />
+            </div>
+          )}
+
+          <div style={{ marginBottom: 18 }}>
+            <label style={{ color: COLORS.muted, fontSize: 12, fontFamily: "'DM Mono', monospace", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Email</label>
+            <input type="email" placeholder="you@example.com" value={form.email} onChange={e => set("email", e.target.value)} style={inputStyle} />
+          </div>
+
+          <div style={{ marginBottom: 28 }}>
+            <label style={{ color: COLORS.muted, fontSize: 12, fontFamily: "'DM Mono', monospace", display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>Password</label>
+            <input type="password" placeholder="••••••••" value={form.password} onChange={e => set("password", e.target.value)} style={inputStyle} />
+          </div>
+
+          <button onClick={() => valid && onSignUp(form)} style={{
+            width: "100%", background: valid ? COLORS.accent : COLORS.border,
+            color: valid ? COLORS.bg : COLORS.muted2, border: "none", borderRadius: 10,
+            padding: "13px 0", fontWeight: 800, fontSize: 15,
+            cursor: valid ? "pointer" : "not-allowed", fontFamily: "'DM Sans', sans-serif"
+          }}>
+            {mode === "signup" ? "Create Account" : "Log In"}
+          </button>
+
+          <p style={{ textAlign: "center", color: COLORS.muted2, fontSize: 13, fontFamily: "'DM Sans', sans-serif", marginTop: 20 }}>
+            {mode === "signup" ? "Already have an account? " : "Don't have an account? "}
+            <span onClick={() => setMode(mode === "signup" ? "login" : "signup")} style={{ color: COLORS.accent, cursor: "pointer", fontWeight: 600 }}>
+              {mode === "signup" ? "Log in" : "Sign up"}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Landing({ onStart, onSignUp }) {
   return (
     <div style={{ minHeight: "100vh", background: COLORS.bg, display: "flex", flexDirection: "column" }}>
       <div style={{ padding: "24px 32px", borderBottom: `1px solid ${COLORS.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ color: COLORS.accent, fontWeight: 800, fontSize: 22, fontFamily: "'DM Sans', sans-serif" }}>Forward</span>
-        <button onClick={onStart} style={{ background: "transparent", color: COLORS.accent, border: `1px solid ${COLORS.accent}`, borderRadius: 8, padding: "7px 18px", cursor: "pointer", fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>Sign In</button>
+        <button onClick={onSignUp} style={{ background: "transparent", color: COLORS.accent, border: `1px solid ${COLORS.accent}`, borderRadius: 8, padding: "7px 18px", cursor: "pointer", fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>Sign In</button>
       </div>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 24px", textAlign: "center" }}>
         <div style={{ background: COLORS.accentDim, border: `1px solid ${COLORS.accent}`, borderRadius: 20, padding: "6px 18px", marginBottom: 32, display: "inline-block" }}>
@@ -122,7 +200,7 @@ function Landing({ onStart }) {
             </div>
           ))}
         </div>
-        <button onClick={onStart} style={{
+        <button onClick={onSignUp} style={{
           background: COLORS.accent, color: COLORS.bg, border: "none",
           borderRadius: 10, padding: "14px 40px", fontSize: 16, fontWeight: 800,
           cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: -0.3
@@ -347,16 +425,25 @@ export default function App() {
     setSelected(t => t ? { ...t, status: "appealed" } : null);
   };
 
+  const globalStyles = `@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Mono:wght@400;500;700&display=swap'); * { margin:0; padding:0; box-sizing:border-box; } body { background: #0D1B2A; min-height: 100vh; } @keyframes spin { to { transform: rotate(360deg); } }`;
+
   if (page === "landing") return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Mono:wght@400;500;700&display=swap'); * { margin:0; padding:0; box-sizing:border-box; } body { background: #0D1B2A; } @keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      <Landing onStart={() => nav("dashboard")} />
+      <style>{globalStyles}</style>
+      <Landing onStart={() => nav("dashboard")} onSignUp={() => nav("signup")} />
+    </>
+  );
+
+  if (page === "signup") return (
+    <>
+      <style>{globalStyles}</style>
+      <SignUp onSignUp={() => nav("dashboard")} onBack={() => nav("landing")} />
     </>
   );
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Mono:wght@400;500;700&display=swap'); * { margin:0; padding:0; box-sizing:border-box; } body { background: #0D1B2A; min-height: 100vh; } @keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{globalStyles}</style>
       <div style={{ minHeight: "100vh", background: COLORS.bg }}>
         <Navbar balance={balance} streak={streak} onNav={nav} page={page} />
         {page === "dashboard" && <Dashboard tasks={tasks} onSelect={(t) => { setSelected(t); setPage("detail"); }} onNav={nav} balance={balance} streak={streak} />}
