@@ -352,7 +352,7 @@ function TaskDetail({ task, onBack, onSubmit, onAppeal }) {
         <div>
           <label style={{ color: COLORS.muted, fontSize: 12, fontFamily: "'DM Mono', monospace", display: "block", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>Evidence of Completion</label>
           <textarea value={evidence} onChange={e => setEvidence(e.target.value)}
-            placeholder="Describe what you did, paste a link, or explain your submission..."
+            placeholder="Upload pictures or documents"
             style={{
               width: "100%", background: COLORS.card, border: `1px solid ${COLORS.border}`,
               borderRadius: 8, padding: "12px 14px", color: COLORS.white,
