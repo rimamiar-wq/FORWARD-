@@ -153,11 +153,11 @@ function SignUp({ onSignUp, onBack }) {
             <input type="password" placeholder="••••••••" value={form.password} onChange={e => set("password", e.target.value)} style={inputStyle} />
           </div>
 
-          <button onClick={() => valid && onSignUp(form)} style={{
-            width: "100%", background: valid ? COLORS.accent : COLORS.border,
-            color: valid ? COLORS.bg : COLORS.muted2, border: "none", borderRadius: 10,
+          <button onClick={() => onSignUp(form)} style={{
+            width: "100%", background: COLORS.accent,
+            color: COLORS.bg, border: "none", borderRadius: 10,
             padding: "13px 0", fontWeight: 800, fontSize: 15,
-            cursor: valid ? "pointer" : "not-allowed", fontFamily: "'DM Sans', sans-serif"
+            cursor: "pointer", fontFamily: "'DM Sans', sans-serif"
           }}>
             {mode === "signup" ? "Create Account" : "Log In"}
           </button>
@@ -295,10 +295,10 @@ function NewTask({ onSave, onCancel }) {
         <p style={{ color: COLORS.muted2, fontSize: 12, fontFamily: "'DM Sans', sans-serif", marginTop: 8 }}>Returned to you when your work is verified, plus a small bonus.</p>
       </div>
 
-      <button onClick={() => valid && onSave(form)} style={{
-        width: "100%", background: valid ? COLORS.accent : COLORS.border,
-        color: valid ? COLORS.bg : COLORS.muted2, border: "none", borderRadius: 10,
-        padding: "13px 0", fontWeight: 800, fontSize: 15, cursor: valid ? "pointer" : "not-allowed",
+      <button onClick={() => onSave(form)} style={{
+        width: "100%", background: COLORS.accent,
+        color: COLORS.bg, border: "none", borderRadius: 10,
+        padding: "13px 0", fontWeight: 800, fontSize: 15, cursor: "pointer",
         fontFamily: "'DM Sans', sans-serif"
       }}>Commit to This Task</button>
     </div>
@@ -310,7 +310,6 @@ function TaskDetail({ task, onBack, onSubmit, onAppeal }) {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = () => {
-    if (!evidence.trim()) return;
     setSubmitting(true);
     setTimeout(() => { setSubmitting(false); onSubmit(task.id, evidence); }, 3000);
   };
@@ -360,12 +359,12 @@ function TaskDetail({ task, onBack, onSubmit, onAppeal }) {
               fontFamily: "'DM Sans', sans-serif", fontSize: 14, boxSizing: "border-box",
               outline: "none", resize: "vertical", minHeight: 100
             }} />
-          <button onClick={handleSubmit} disabled={!evidence.trim() || submitting} style={{
+          <button onClick={handleSubmit} disabled={submitting} style={{
             width: "100%", marginTop: 14,
-            background: evidence.trim() && !submitting ? COLORS.accent : COLORS.border,
-            color: evidence.trim() && !submitting ? COLORS.bg : COLORS.muted2,
+            background: !submitting ? COLORS.accent : COLORS.border,
+            color: !submitting ? COLORS.bg : COLORS.muted2,
             border: "none", borderRadius: 10, padding: "13px 0",
-            fontWeight: 800, fontSize: 15, cursor: evidence.trim() && !submitting ? "pointer" : "not-allowed",
+            fontWeight: 800, fontSize: 15, cursor: !submitting ? "pointer" : "not-allowed",
             fontFamily: "'DM Sans', sans-serif"
           }}>
             {submitting ? "Reviewing..." : "Submit for Verification"}
